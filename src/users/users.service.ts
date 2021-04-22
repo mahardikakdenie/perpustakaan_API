@@ -59,7 +59,8 @@ export class UsersService {
   async findAll() {
     const users = await this.userRepository
       .createQueryBuilder('User')
-      .leftJoinAndSelect('User.roles', 'roles');
+      .leftJoinAndSelect('User.roles', 'roles')
+      .leftJoinAndSelect('User.loan', 'loan');
     return users.getMany();
   }
 }

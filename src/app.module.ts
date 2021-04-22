@@ -4,6 +4,7 @@ import { DatabaseConnectionService } from './shared/services/database-connection
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { LoansModule } from './loans/loans.module';
+import { BooksModule } from './books/books.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { LoansModule } from './loans/loans.module';
     UsersModule,
     RolesModule,
     LoansModule,
+    BooksModule,
   ],
   controllers: [],
   providers: [],

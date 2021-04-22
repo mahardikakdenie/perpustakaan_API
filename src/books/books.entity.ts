@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Book } from 'src/books/books.entity';
-import { User } from 'src/users/user.entity';
+import { Loan } from 'src/loans/loans.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -8,19 +7,25 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  ManyToOne,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
-export class Loan {
+export class Book {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  Date_loan: Date;
+  title: string;
 
   @Column()
-  Date_return: Date;
+  publisher: string;
+
+  @Column()
+  genre: string;
+
+  @Column()
+  thumbnail_link: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -31,9 +36,6 @@ export class Loan {
   @DeleteDateColumn()
   deleted_at: Date;
 
-  @ManyToOne(() => User, (user) => user.loan)
-  user: number;
-
-  @ManyToOne(() => Book, (book) => book.loan)
-  books: number;
+  @OneToMany(() => Loan, (loan) => loan.books)
+  loan: Loan[];
 }
