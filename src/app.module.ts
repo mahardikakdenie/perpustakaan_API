@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConnectionService } from './shared/services/database-connection.service';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
+import { LoansModule } from './loans/loans.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { RolesModule } from './roles/roles.module';
     }),
     UsersModule,
     RolesModule,
+    LoansModule,
   ],
   controllers: [],
   providers: [],

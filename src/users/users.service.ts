@@ -22,6 +22,28 @@ export class UsersService {
     await this.userRepository.save(users);
     return users.toResponseObject(false);
   }
+
+  async registrasiAsAdmin(data: UserDTO) {
+    const { username } = data;
+    let users = await this.userRepository.findOne({ where: { username } });
+
+    if (users) {
+      throw new HttpException('user Already Exist ', HttpStatus.BAD_REQUEST);
+    }
+
+    const user = new User();
+    user.username = data.username;
+    user.email = data.email;
+    user.password = data.password;
+    user.address = data.address;
+    user.roles = 2;
+
+    users = await this.userRepository.create(user);
+    await this.userRepository.save(users);
+
+    return users.toResponseObject(false);
+  }
+
   async login(data: UserDTO) {
     const { username, password } = data;
     const users = await this.userRepository.findOne({ where: { username } });

@@ -22,4 +22,9 @@ export class UsersController {
   register(@Body() data: UserDTO) {
     return this.userService.registrasi(data);
   }
+
+  @Post('/register/admin')
+  registerAsAdmin(@Body() data: UserDTO) {
+    return this.userService.registrasiAsAdmin(data);
+  }
 }

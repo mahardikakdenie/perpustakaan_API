@@ -7,10 +7,12 @@ import {
   BeforeInsert,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Roles } from 'src/roles/roles.entity';
+import { Loan } from 'src/loans/loans.entity';
 
 @Entity()
 export class User {
@@ -44,17 +46,21 @@ export class User {
   @ManyToOne(() => Roles, (roles) => roles.user)
   roles: number;
 
+  @OneToMany(() => Loan, (loan) => loan.user)
+  loan: Loan[];
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
   }
   toResponseObject(showToken: boolean) {
-    const { id, created_at, username, token } = this;
+    const { id, created_at, username, token, roles } = this;
     const responseObject: any = {
       id,
       created_at,
       username,
       token,
+      roles,
     };
     if (showToken) {
       responseObject.token = token;
