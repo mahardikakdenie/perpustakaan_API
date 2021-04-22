@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserDTO } from './user.dto';
 import { User } from './user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -56,11 +57,43 @@ export class UsersService {
     return users.toResponseObject(false);
   }
 
-  async findAll() {
+  async findAll(q: any, sort: any) {
     const users = await this.userRepository
       .createQueryBuilder('User')
       .leftJoinAndSelect('User.roles', 'roles')
       .leftJoinAndSelect('User.loan', 'loan');
+
+    if (q.q) {
+      users.where('User.username = :username', { username: q.q });
+    }
+
+    if (sort.sort === '-id') {
+      users.orderBy('User.id', 'DESC');
+    }
     return users.getMany();
+  }
+
+  async findById(id: any) {
+    const users = await this.userRepository
+      .createQueryBuilder('User')
+      .leftJoinAndSelect('User.roles', 'roles')
+      .leftJoinAndSelect('User.loan', 'loan')
+      .where('User.id = :id', { id: id.id });
+
+    return users.getOne();
+  }
+
+  async editById(data: UserDTO, id: any) {
+    const users = await this.userRepository
+      .createQueryBuilder('User')
+      .update()
+      .set(data)
+      .where('User.id = :id', { id: id.id });
+
+    if (data.password) {
+      data.password = await bcrypt.hash(data.password, 10);
+    }
+
+    return users.execute();
   }
 }

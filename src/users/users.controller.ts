@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Param,
+  Query,
+  Patch,
+} from '@nestjs/common';
 import { UserDTO } from './user.dto';
 import { AuthGuard } from './users.guard';
 import { UsersService } from './users.service';
@@ -9,8 +18,26 @@ export class UsersController {
 
   @Get()
   @UseGuards(new AuthGuard())
-  showAllUsers() {
-    return this.userService.findAll();
+  async showAllUsers(@Query() q: string, @Query() sort: string) {
+    return {
+      meta: {
+        status: true,
+        message: 'Success',
+      },
+      data: await this.userService.findAll(q, sort),
+    };
+  }
+
+  @Get(':id')
+  @UseGuards(new AuthGuard())
+  async findById(@Param() id: number) {
+    return {
+      meta: {
+        status: true,
+        message: 'Message',
+      },
+      data: await this.userService.findById(id),
+    };
   }
 
   @Post('/login')
@@ -26,5 +53,16 @@ export class UsersController {
   @Post('/register/admin')
   registerAsAdmin(@Body() data: UserDTO) {
     return this.userService.registrasiAsAdmin(data);
+  }
+
+  @Patch(':id/edit')
+  async editById(@Body() data: UserDTO, @Param() id: number) {
+    return {
+      meta: {
+        status: true,
+        message: 'Succes',
+      },
+      data: await this.userService.editById(data, id),
+    };
   }
 }
