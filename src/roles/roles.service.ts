@@ -18,6 +18,15 @@ export class RolesService {
     return roles.getMany();
   }
 
+  findById(id: any) {
+    const roles = this.rolesRepository
+      .createQueryBuilder('Roles')
+      .where('Roles.id = :id', { id: id.id })
+      .leftJoinAndSelect('Roles.user', 'user');
+
+    return roles.getOne();
+  }
+
   create(data: RolesDto) {
     const roles = new Roles();
     roles.name = data.name;

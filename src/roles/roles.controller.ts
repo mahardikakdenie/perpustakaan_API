@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/users/users.guard';
 import { RolesDto } from './roles.dto';
 import { RolesService } from './roles.service';
@@ -16,6 +16,17 @@ export class RolesController {
         message: 'Success',
       },
       data: await this.roleService.findAll(),
+    };
+  }
+
+  @Get(':id')
+  async findById(@Param() id: number) {
+    return {
+      meta: {
+        status: true,
+        message: 'Success',
+      },
+      data: await this.roleService.findById(id),
     };
   }
 

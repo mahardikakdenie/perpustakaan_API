@@ -53,7 +53,21 @@ export class User {
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
   }
-  toResponseObject(showToken: boolean) {
+  toResponseObject() {
+    const { id, created_at, username, roles, loan } = this;
+    const responseObject: any = {
+      id,
+      created_at,
+      username,
+      roles,
+      loan,
+    };
+    const anyResponse: any = {
+      responseObject,
+    };
+    return anyResponse;
+  }
+  toResponseObjecGetToken(showToken: boolean) {
     const { id, created_at, username, token, roles } = this;
     const responseObject: any = {
       id,
@@ -65,7 +79,14 @@ export class User {
     if (showToken) {
       responseObject.token = token;
     }
-    return responseObject;
+    const anyResponse: any = {
+      meta: {
+        status: true,
+        message: 'Success',
+      },
+      data: responseObject,
+    };
+    return anyResponse;
   }
 
   async comparePassword(attemp: string) {

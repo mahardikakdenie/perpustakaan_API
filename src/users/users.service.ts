@@ -21,7 +21,7 @@ export class UsersService {
     }
     users = await this.userRepository.create(data);
     await this.userRepository.save(users);
-    return users.toResponseObject(false);
+    return users.toResponseObjecGetToken(false);
   }
 
   async registrasiAsAdmin(data: UserDTO) {
@@ -42,19 +42,23 @@ export class UsersService {
     users = await this.userRepository.create(user);
     await this.userRepository.save(users);
 
-    return users.toResponseObject(false);
+    return users.toResponseObjecGetToken(false);
   }
 
   async login(data: UserDTO) {
-    const { username, password } = data;
-    const users = await this.userRepository.findOne({ where: { username } });
+    const { username, password, email } = data;
+    const users = await this.userRepository
+      .createQueryBuilder('User')
+      .where('User.username = :username', { username: username })
+      .orWhere('User.email = :email', { email: email })
+      .getOne();
     if (!users || !(await users.comparePassword(password))) {
       throw new HttpException(
         'Invalid username/password',
         HttpStatus.BAD_REQUEST,
       );
     }
-    return users.toResponseObject(false);
+    return users.toResponseObjecGetToken(false);
   }
 
   async findAll(q: any, sort: any) {
@@ -70,7 +74,7 @@ export class UsersService {
     if (sort.sort === '-id') {
       users.orderBy('User.id', 'DESC');
     }
-    return users.getMany();
+    return (await users.getMany()).map((x) => x.toResponseObject());
   }
 
   async findById(id: any) {
