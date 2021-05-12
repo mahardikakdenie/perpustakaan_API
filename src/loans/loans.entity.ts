@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Book } from 'src/books/books.entity';
+import { Pinalty } from 'src/pinalty/pinalty.entity';
 import { User } from 'src/users/user.entity';
 import {
   Entity,
@@ -36,4 +37,7 @@ export class Loan {
 
   @ManyToOne(() => Book, (book) => book.loan)
   books: number;
+
+  @ManyToOne(() => Pinalty, (pinalty) => pinalty.loan)
+  pinalty: number
 }
