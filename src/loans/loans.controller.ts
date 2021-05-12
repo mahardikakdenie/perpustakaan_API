@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/users/users.guard';
 import { LoansService } from './loans.service';

@@ -55,7 +55,7 @@ export class User {
   }
   toResponseObject() {
     const { id, created_at, username, roles, loan } = this;
-    const responseObject: any = {
+    const users: any = {
       id,
       created_at,
       username,
@@ -63,7 +63,7 @@ export class User {
       loan,
     };
     const anyResponse: any = {
-      responseObject,
+      users,
     };
     return anyResponse;
   }

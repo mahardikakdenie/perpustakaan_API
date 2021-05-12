@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Controller,
   Get,
@@ -8,7 +9,9 @@ import {
   Query,
   Patch,
 } from '@nestjs/common';
+import { UserDecorator } from './user.decorator';
 import { UserDTO } from './user.dto';
+import { User } from './user.entity';
 import { AuthGuard } from './users.guard';
 import { UsersService } from './users.service';
 
@@ -28,6 +31,32 @@ export class UsersController {
     };
   }
 
+  @Get('me1')
+  @UseGuards(new AuthGuard())
+  async findOne(@UserDecorator() user: User) {
+    return {
+      meta: {
+        status: true,
+        message: "success"
+      }, 
+      data: await user
+    }
+  }
+
+  @Get('me')
+  @UseGuards(new AuthGuard())
+  async me(@UserDecorator() user: User) {
+    console.log(user);
+    
+    return {
+      meta: {
+        status: true,
+        message: "success"
+      }, 
+      data: await this.userService.me(user)
+    }
+  }
+
   @Get(':id')
   @UseGuards(new AuthGuard())
   async findById(@Param() id: number) {
@@ -41,7 +70,7 @@ export class UsersController {
   }
 
   @Post('/login')
-  login(@Body() data: UserDTO) {
+  login(@Body() data: User) {
     return this.userService.login(data);
   }
 

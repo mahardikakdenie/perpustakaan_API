@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable prefer-const */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,7 +11,7 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async registrasi(data: UserDTO) {
     const { username } = data;
@@ -43,6 +44,15 @@ export class UsersService {
     await this.userRepository.save(users);
 
     return users.toResponseObjecGetToken(false);
+  }
+  async me(id: any) {
+    console.log(id);
+
+    const user = await this.userRepository.createQueryBuilder('User').leftJoinAndSelect('User.roles', 'roles')
+      .leftJoinAndSelect('User.loan', 'loan')
+      .where('User.id = :id', { id: id });
+
+    return user.getOne();
   }
 
   async login(data: UserDTO) {
