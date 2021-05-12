@@ -46,8 +46,6 @@ export class UsersService {
     return users.toResponseObjecGetToken(false);
   }
   async me(id: any) {
-    console.log(id);
-
     const user = await this.userRepository.createQueryBuilder('User').leftJoinAndSelect('User.roles', 'roles')
       .leftJoinAndSelect('User.loan', 'loan')
       .where('User.id = :id', { id: id });

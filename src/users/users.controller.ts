@@ -46,8 +46,6 @@ export class UsersController {
   @Get('me')
   @UseGuards(new AuthGuard())
   async me(@UserDecorator() user: User) {
-    console.log(user);
-    
     return {
       meta: {
         status: true,
