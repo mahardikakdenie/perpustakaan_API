@@ -8,11 +8,13 @@ import {
   UpdateDateColumn,
   ManyToOne,
   OneToMany,
+  // ViewColumn
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Roles } from 'src/roles/roles.entity';
 import { Loan } from 'src/loans/loans.entity';
+import { Pinalty } from 'src/pinalty/pinalty.entity';
 
 @Entity()
 export class User {
@@ -37,6 +39,9 @@ export class User {
   @Column()
   address: string;
 
+  // @ViewColumn()
+  // role_id: number;
+
   @CreateDateColumn()
   created_at: Date;
 
@@ -48,6 +53,9 @@ export class User {
 
   @OneToMany(() => Loan, (loan) => loan.user)
   loan: Loan[];
+
+  @OneToMany(() => Pinalty, (pinalty) => pinalty.user)
+  pinalty: Pinalty[];
 
   @BeforeInsert()
   async hashPassword() {

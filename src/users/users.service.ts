@@ -48,6 +48,7 @@ export class UsersService {
   async me(id: any) {
     const user = await this.userRepository.createQueryBuilder('User').leftJoinAndSelect('User.roles', 'roles')
       .leftJoinAndSelect('User.loan', 'loan')
+      .leftJoinAndSelect('User.pinalty', 'create_pinalty')
       .where('User.id = :id', { id: id });
 
     return user.getOne();

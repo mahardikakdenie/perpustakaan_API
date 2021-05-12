@@ -5,4 +5,5 @@ export class LoanDTO {
   date_loan: Date;
   userId: number;
   bookId: number;
+  pinaltyId: number;
 }
