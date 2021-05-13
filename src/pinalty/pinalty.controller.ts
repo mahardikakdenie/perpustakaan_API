@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, UseGuards, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, Param, Patch, Delete } from '@nestjs/common';
 import { UserDecorator } from 'src/users/user.decorator';
 import { AuthGuard } from 'src/users/users.guard';
 import { PinaltyService } from './pinalty.service';
@@ -44,7 +44,7 @@ export class PinaltyController {
   }
 
   @Patch(':id/edit')
-  async edit(@Body() data: PinaltyDTO, id: number) {
+  async edit(@Body() data: PinaltyDTO, @Param() id: number) {
     return {
       meta: {
         status: true,
@@ -52,5 +52,16 @@ export class PinaltyController {
       },
       data: await this.pinaltyService.edit(data, id),
     };
+  }
+
+  @Delete(':id/delete')
+  async delete(@Param() id: number) {
+      return {
+          meta: {
+              status: true,
+              message: 'Success'
+          },
+          data: await this.pinaltyService.delete(id)
+      }
   }
 }

@@ -12,10 +12,17 @@ export class RolesService {
     private readonly rolesRepository: Repository<Roles>,
   ) {}
 
-  findAll() {
+  findAll(q: any) {
+    console.log(q.q);
+    
     const roles = this.rolesRepository
       .createQueryBuilder('Roles')
       .leftJoinAndSelect('Roles.user', 'user');
+
+    if (q.q) {
+      roles.where('Roles.name = :name', { name: q.q });
+    }
+
     return roles.getMany();
   }
 

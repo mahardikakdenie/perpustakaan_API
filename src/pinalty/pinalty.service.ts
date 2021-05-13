@@ -22,7 +22,6 @@ export class PinaltyService {
   }
 
   async findById(id: any) {
-    console.log(id.id);
 
     const pinalty = await this.pinaltyRepository
       .createQueryBuilder('Pinalty')
@@ -59,8 +58,21 @@ export class PinaltyService {
       .createQueryBuilder('Pinalty')
       .update()
       .set(data)
-      .where('Pinalty.id = :id', { id: { id } });
+      .where('Pinalty.id = :id', { id: id.id });
 
     return pinalty.execute();
+  }
+
+  // update(data: PinaltyDTO, id: number) {
+  //   return this.pinaltyRepository.update(id, { ...data });
+  // }
+
+  async delete(id: any) {
+    const pinalty = await this.pinaltyRepository
+      .createQueryBuilder('Pinalty')
+      .softDelete()
+      .where('Pinalty.id = :id', { id: id.id });
+
+      return pinalty.execute();
   }
 }
