@@ -15,6 +15,7 @@ import * as jwt from 'jsonwebtoken';
 import { Roles } from 'src/roles/roles.entity';
 import { Loan } from 'src/loans/loans.entity';
 import { Pinalty } from 'src/pinalty/pinalty.entity';
+import { Donations } from 'src/donations/donations.entity';
 
 @Entity()
 export class User {
@@ -56,6 +57,9 @@ export class User {
 
   @OneToMany(() => Pinalty, (pinalty) => pinalty.user)
   pinalty: Pinalty[];
+
+  @OneToMany(() => Donations, (donations) => donations.user)
+  donations: Donations[]
 
   @BeforeInsert()
   async hashPassword() {

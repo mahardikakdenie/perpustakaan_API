@@ -7,6 +7,7 @@ import { RolesModule } from './roles/roles.module';
 import { LoansModule } from './loans/loans.module';
 import { BooksModule } from './books/books.module';
 import { PinaltyModule } from './pinalty/pinalty.module';
+import { DonationsModule } from './donations/donations.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PinaltyModule } from './pinalty/pinalty.module';
     LoansModule,
     BooksModule,
     PinaltyModule,
+    DonationsModule,
   ],
   controllers: [],
 })
