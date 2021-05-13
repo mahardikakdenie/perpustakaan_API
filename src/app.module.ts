@@ -7,7 +7,10 @@ import { RolesModule } from './roles/roles.module';
 import { LoansModule } from './loans/loans.module';
 import { BooksModule } from './books/books.module';
 import { PinaltyModule } from './pinalty/pinalty.module';
+<<<<<<< HEAD
 import { DonationsModule } from './donations/donations.module';
+=======
+>>>>>>> aacfaf3acfe67925457dde624b9a136a2f3e1ad2
 
 @Module({
   imports: [
@@ -19,7 +22,10 @@ import { DonationsModule } from './donations/donations.module';
     LoansModule,
     BooksModule,
     PinaltyModule,
+<<<<<<< HEAD
     DonationsModule,
+=======
+>>>>>>> aacfaf3acfe67925457dde624b9a136a2f3e1ad2
   ],
   controllers: [],
 })
