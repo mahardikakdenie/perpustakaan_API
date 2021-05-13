@@ -15,10 +15,7 @@ import * as jwt from 'jsonwebtoken';
 import { Roles } from 'src/roles/roles.entity';
 import { Loan } from 'src/loans/loans.entity';
 import { Pinalty } from 'src/pinalty/pinalty.entity';
-<<<<<<< HEAD
 import { Donations } from 'src/donations/donations.entity';
-=======
->>>>>>> aacfaf3acfe67925457dde624b9a136a2f3e1ad2
 
 @Entity()
 export class User {
@@ -61,12 +58,10 @@ export class User {
   @OneToMany(() => Pinalty, (pinalty) => pinalty.user)
   pinalty: Pinalty[];
 
-<<<<<<< HEAD
+
   @OneToMany(() => Donations, (donations) => donations.user)
   donations: Donations[]
 
-=======
->>>>>>> aacfaf3acfe67925457dde624b9a136a2f3e1ad2
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);

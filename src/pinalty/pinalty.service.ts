@@ -1,9 +1,5 @@
 /* eslint-disable prettier/prettier */
-<<<<<<< HEAD
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-=======
-import { Injectable } from '@nestjs/common';
->>>>>>> aacfaf3acfe67925457dde624b9a136a2f3e1ad2
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Pinalty } from './pinalty.entity';
@@ -25,7 +21,6 @@ export class PinaltyService {
     return pinalty.getMany();
   }
 
-<<<<<<< HEAD
   async findById(id: any) {
     console.log(id.id);
 
@@ -47,9 +42,6 @@ export class PinaltyService {
 
     return pinalty.getOne();
   }
-
-=======
->>>>>>> aacfaf3acfe67925457dde624b9a136a2f3e1ad2
   async create(data: PinaltyDTO, user_id) {
     const pinalty = new Pinalty();
     pinalty.name = data.name;
@@ -61,17 +53,14 @@ export class PinaltyService {
 
     return await this.pinaltyRepository.save(pinalty);
   }
-<<<<<<< HEAD
 
   async edit(data: PinaltyDTO, id: any) {
     const pinalty = await this.pinaltyRepository
       .createQueryBuilder('Pinalty')
       .update()
       .set(data)
-      .where("Pinalty.id = :id", {id: {id}})
+      .where('Pinalty.id = :id', { id: { id } });
 
-      return pinalty.execute();
+    return pinalty.execute();
   }
-=======
->>>>>>> aacfaf3acfe67925457dde624b9a136a2f3e1ad2
 }
