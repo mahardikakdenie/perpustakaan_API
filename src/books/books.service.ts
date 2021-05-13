@@ -12,9 +12,20 @@ export class BooksService {
   ) {}
 
   findAll() {
-    const books = this.bookRepository.createQueryBuilder('Book');
+    const books = this.bookRepository
+      .createQueryBuilder('Book')
+      .leftJoinAndSelect('Book.loan', 'loan');
 
     return books.getMany();
+  }
+
+  findById(id: any) {
+    const books = this.bookRepository
+      .createQueryBuilder('Book')
+      .leftJoinAndSelect('Book.loan', 'loan')
+      .where('Book.id = :id', { id: id.id });
+
+    return books.getOne();
   }
 
   create(data: BookDTO) {
@@ -25,5 +36,24 @@ export class BooksService {
     books.thumbnail_link = data.thumbnail_link;
 
     return this.bookRepository.save(books);
+  }
+
+  edit(data: BookDTO, id: any) {
+    const books = this.bookRepository
+      .createQueryBuilder('Book')
+      .update()
+      .set(data)
+      .where('Book.id = :id', { id: id.id });
+
+    return books.execute();
+  }
+
+  deletebySoftDelete(id: any) {
+    const books = this.bookRepository
+      .createQueryBuilder('Book')
+      .softDelete()
+      .where('Book.id = :id', { id: id.id });
+
+      return books.execute();
   }
 }

@@ -1,5 +1,14 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Param,
+  Patch,
+  Delete
+} from '@nestjs/common';
 import { AuthGuard } from 'src/users/users.guard';
 import { BookDTO } from './books.dto';
 import { BooksService } from './books.service';
@@ -28,5 +37,38 @@ export class BooksController {
       },
       data: await this.bookService.create(data),
     };
+  }
+
+  @Get(':id')
+  async findById(@Param() id: number) {
+    return {
+      meta: {
+        status: true,
+        message: 'Success',
+      },
+      data: await this.bookService.findById(id),
+    };
+  }
+
+  @Patch(':id/edit')
+  async edit(@Body() data: BookDTO, @Param() id: number) {
+    return {
+      meta: {
+        status: true,
+        message: 'Success',
+      },
+      data: await this.bookService.edit(data, id),
+    };
+  }
+
+  @Delete(':id/delete')
+  async deleteId(@Param() id: number) {
+    return {
+      meta: {
+        status: true,
+        message: 'Success'
+      },
+      data: await this.bookService.deletebySoftDelete(id)
+    }
   }
 }
