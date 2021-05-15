@@ -1,5 +1,15 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { UserDecorator } from 'src/users/user.decorator';
 import { AuthGuard } from 'src/users/users.guard';
 import { LoanDTO } from './loans.dto';
@@ -10,13 +20,35 @@ import { LoansService } from './loans.service';
 export class LoansController {
   constructor(private readonly loanService: LoansService) {}
   @Get()
-  async findAll() {
+  async findAll(@Query() q: string) {
     return {
       meta: {
         status: true,
         message: 'Success',
       },
-      data: await this.loanService.findAll(),
+      data: await this.loanService.findAll(q),
+    };
+  }
+
+  @Get(':id')
+  async findById(@Param() id: number) {
+    return {
+      meta: {
+        status: true,
+        message: 'Success',
+      },
+      data: await this.loanService.findById(id),
+    };
+  }
+
+  @Patch(':id/edit')
+  async edit(@Body() data: LoanDTO, @Param() id: number) {
+    return {
+      meta: {
+        status: true,
+        message: 'Success',
+      },
+      data: await this.loanService.edit(data, id),
     };
   }
 
@@ -27,7 +59,18 @@ export class LoansController {
         status: true,
         message: 'Success',
       },
-      data: await this.loanService.create(data, user)
+      data: await this.loanService.create(data, user),
     };
+  }
+
+  @Delete(':id/delete')
+  async softDelete(@Param() id: number) {
+    return {
+      meta: {
+        status: true,
+        message: 'Success'
+      },
+      data: await this.loanService.deleteBySoft(id)
+    }
   }
 }

@@ -12,16 +12,31 @@ export class LoansService {
     private readonly loanRepository: Repository<Loan>,
   ) {}
 
-  async findAll() {
+  async findAll(q: any) {
     const loans = await this.loanRepository
       .createQueryBuilder('Loan')
       .leftJoinAndSelect('Loan.user', 'user')
       .leftJoinAndSelect('Loan.pinalty', 'pinalty')
       .leftJoinAndSelect('Loan.books', 'books');
+
+    if (q.q) {
+      loans.where('Loan.user.name = :user.name', { name: q.q });
+    }
     return loans.getMany();
   }
 
-  create(data: LoanDTO, user_id:number) {
+  async findById(id: any) {
+    const loans = await this.loanRepository
+      .createQueryBuilder('Loan')
+      .leftJoinAndSelect('Loan.user', 'user')
+      .leftJoinAndSelect('Loan.pinalty', 'pinalty')
+      .leftJoinAndSelect('Loan.books', 'books')
+      .where('Loan.id = :id', { id: id.id });
+
+    return loans.getOneOrFail();
+  }
+
+  create(data: LoanDTO, user_id: number) {
     const loans = new Loan();
     loans.Date_loan = data.date_loan;
     loans.Date_return = data.date_return;
@@ -30,5 +45,24 @@ export class LoansService {
     loans.books = data.bookId;
 
     return this.loanRepository.save(loans);
+  }
+
+  async edit(data: LoanDTO, id: any) {
+    const loans = await this.loanRepository
+      .createQueryBuilder('Loan')
+      .update()
+      .set(data)
+      .where('Loan.id = :id', {id: id.id})
+
+      return loans.execute()
+  }
+
+  async deleteBySoft(id: any) {
+    const pinalty = await this.loanRepository
+      .createQueryBuilder('Loan')
+      .softDelete()
+      .where('Loan.id = :id', { id: id.id });
+
+    return pinalty.execute();
   }
 }
